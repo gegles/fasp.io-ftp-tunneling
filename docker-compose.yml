@@ -1,0 +1,34 @@
+version: "3.7"
+services:
+  gw1:
+    image: fasp.io
+    ports:
+      - "2121:12345"
+    environment:
+      - LOCAL_PROTOCOL=tcp
+      - FORWARD_PROTOCOL=fasp
+      - FORWARD_HOST=gw2
+  gw2:
+    image: fasp.io
+    environment:
+      - LOCAL_PROTOCOL=fasp
+      - FORWARD_PROTOCOL=tcp
+      - FORWARD_HOST=vsftpd
+      - FORWARD_PORT=21
+  vsftpd:
+    image: fauria/vsftpd
+    volumes:
+      - ./logs:/var/log
+      - ./data:/home/vsftpd
+    restart: always
+    ports:
+      - "21:21"
+      - "2000-2001:2000-2001"
+    environment:
+      #- LOG_STDOUT=true
+      #- XFERLOG_STD_FORMAT=YES
+      - FTP_USER=myuser
+      - FTP_PASS=mypass
+      - PASV_ADDRESS=127.0.0.1
+      - PASV_MIN_PORT=2000
+      - PASV_MAX_PORT=2001

@@ -1,0 +1,28 @@
+#######################
+## GATEWAY SETTINGS
+#######################
+
+[[bridge]]
+        name = "FTP-21"
+    [bridge.local]
+        protocol = "tcp"
+            host = "0.0.0.0"
+            port = 2121
+
+    [bridge.forward]
+        protocol = "fasp"
+            host = "gw2"
+            port = 2121
+
+
+[[bridge]]
+        name = "FTP-2000"
+    [bridge.local]
+        protocol = "tcp"
+            host = "0.0.0.0"
+            port = 2000
+
+    [bridge.forward]
+        protocol = "fasp"
+            host = "gw2"
+            port = 2000

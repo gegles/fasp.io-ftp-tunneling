@@ -1,34 +1,36 @@
 version: "3.7"
 services:
   gw1:
-    image: fasp.io
+    image: hyc-faspio-team-docker-local.artifactory.swg-devops.com/fasp.io
     ports:
-      - "2121:12345"
-    environment:
-      - LOCAL_PROTOCOL=tcp
-      - FORWARD_PROTOCOL=fasp
-      - FORWARD_HOST=gw2
+      - "21:2121"
+      - "2000:2000"
+    # Need to override the docker-entrypoint.sh script that would otherwise overwrite the gateway.toml
+    entrypoint: ""
+    volumes:
+      - ./gateway1.toml:/etc/fasp.io/gateway.toml
   gw2:
-    image: fasp.io
-    environment:
-      - LOCAL_PROTOCOL=fasp
-      - FORWARD_PROTOCOL=tcp
-      - FORWARD_HOST=vsftpd
-      - FORWARD_PORT=21
+    image: hyc-faspio-team-docker-local.artifactory.swg-devops.com/fasp.io
+    expose:
+      - "2121"
+      - "2000"
+    # Need to override the docker-entrypoint.sh script that would otherwise overwrite the gateway.toml
+    entrypoint: ""
+    volumes:
+      - ./gateway2.toml:/etc/fasp.io/gateway.toml
   vsftpd:
-    image: fauria/vsftpd
+    image: promiscuous-vsftpd
+    build:
+      context: ./vsftpd
     volumes:
       - ./logs:/var/log
       - ./data:/home/vsftpd
     restart: always
-    ports:
-      - "21:21"
-      - "2000-2001:2000-2001"
+    expose:
+      - "21"
+      - "2000"
     environment:
-      #- LOG_STDOUT=true
-      #- XFERLOG_STD_FORMAT=YES
       - FTP_USER=myuser
       - FTP_PASS=mypass
-      - PASV_ADDRESS=127.0.0.1
       - PASV_MIN_PORT=2000
-      - PASV_MAX_PORT=2001
+      - PASV_MAX_PORT=2000

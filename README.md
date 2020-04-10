@@ -12,19 +12,19 @@ Especially, this requires the following constraints/limitations:
 
 In the future, we hope to significantly improve this by making the gateway FTP-aware.
 
+## Prerequistes
+
+* Any FTP client (e.g. on macOS: `brew install lftp`)
+* Docker (e.g. on macOS: `brew cask install docker`)
+
 ## Preparation
 * Generate test data (once, optional)
 ```console
     ./generate_data.sh
 ```
-* Install FTP client (once, optional)
+* Log onto the docker repository (Use your IBMers' credentials)
 
 ```console
-    brew install lftp
-    lftp --version
-```
-* Log onto the docker repository (readable for any IBMers. Use your IBMers creds)
-```
     docker login hyc-faspio-team-docker-local.artifactory.swg-devops.com
 ```
 

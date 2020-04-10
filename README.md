@@ -12,6 +12,18 @@ Especially, this requires the following constraints/limitations:
 
 In the future, we hope to significantly improve this by making the gateway FTP-aware.
 
+## Topology
+
+```as
+   +-----------+         +--------------+                      +---------------+           +-----------+
+   |           |         |              |                      |               |           |           |
+   |         21|-------->= 2121         |--------------------->= 2121          |---------->= 21        |
+   |   ftp     |   TCP   |       GW1    |         FASP         |        GW2    |    TCP    |   vsftpd  |
+   |  client   |-------->= 2000         |--------------------->= 2000          |---------->=           |
+   |           |         |              |                      |               |           |           |
+   +-----------+         +--------------+                      +---------------+           +-----------+
+```
+
 ## Prerequistes
 
 * Any FTP client (e.g. on macOS: `brew install lftp`)
